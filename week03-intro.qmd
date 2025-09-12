@@ -79,6 +79,8 @@ This gives you access to packages/libraries, which are like custom/specialized t
 ```{r}
 # install.packages("tidyverse")
 library(tidyverse)
+
+
 ```
 
 ## Quick note on Base R vs. `tidyverse`
@@ -171,6 +173,25 @@ plot(mtcars$wt, mtcars$mpg,
 Create a scatterplot of two variables of your choice (but not `mpg` vs. `wt`). Feel free to try a `ggplot2` version if you have some R experience!
 
 ```{r}
+plot(mtcars$wt, mtcars$qsec,
+     xlab= "Weight", ylab= "QSEC" ,
+     main= "Aichen's scatterplot")
+
+boxplot(mtcars$disp, mtcars$hp,
+        xlab= "Display", ylab= "CARB",
+        main= "Aichen's boxplots")
+
+mtcars$hp <-c(110, 110,  93, 110, 175, 105, 245,  62,  95, 123, 123, 180, 180, 180, 205, 215, 230,  66,  52,  65,  97, 150, 150, 245, 175,  66,  91, 113, 264, 175, 335, 109)
+hist(mtcars$hp,
+     main= "Aichen's Histogram",
+     xlab= "HorsePower",
+     ylab= "transmission type",
+     col="purple",
+     border="black",
+     breaks= "sturges")  
+     
+    
+
 
 ```
 
