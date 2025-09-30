@@ -1,0 +1,154 @@
+---
+title: "Assignment 4: Exploratory Data Analysis"
+author: "Amber Camp"
+date: "`r Sys.Date()`"
+format: html
+editor: visual
+---
+
+## Overview
+
+Due: **Sunday, 9/28 11:59pm**
+
+In this assignment, you will practice Exploratory Data Analysis (EDA) by making plots from a **Kaggle dataset of your choice**.
+
+You will submit **at least 4 different plot types**, with short written interpretations for each.
+
+Part 1 is worth a total of 1 point, and Part 2 is worth 4 points (1 point for each plot & interpretation).
+
+## Part 1: Get Your Data
+
+1.  Go to [Kaggle Datasets](https://www.kaggle.com/datasets), create an account, and choose a dataset that interests you. Ensure your data has:
+    1.  At least 4 variables
+    2.  At least one categorical and one continuous variable
+    3.  I recommend data that contains at least 50-100 observations
+    4.  Tip: Open the CSV on Kaggle first and skim the columns to check that it meets these requirements
+2.  Download the dataset as a CSV file.
+3.  Place the CSV in your class R project data folder.
+4.  Read it into R with `read_csv()`.
+
+```{r, message=FALSE}
+library(tidyverse)
+mydata <- read_csv("data/spotify_churn_dataset.csv")
+
+
+```
+
+### Describe your data
+
+Data author: Nabiha Zahid
+
+Link: <https://www.kaggle.com/datasets/nabihazahid/spotify-dataset-for-churn-analysis>
+
+Description: The Spotify churn data set is to forecast user's likelihood of staying active or churning(cancelling their description).
+
+### Preview your data
+
+Use some of the strategies you've learned in this class or picked up elsewhere to summarize and quickly explore your data.
+
+```{r}
+SAichens_rename <- spotify_churn_dataset %>%
+  rename(DeviceType = device_type)
+
+SAichens_filter <- spotify_churn_dataset %>%
+  filter(country %in% c("CA", "US"),
+         gender == "Other",
+         listening_time < 113
+         ) 
+SAichens_select <- spotify_churn_dataset %>%
+  select (-offline_listening)
+
+summary (spotify_churn_dataset)
+dim (spotify_churn_dataset)
+```
+
+### Summary stats
+
+Before you make plots, you must also:
+
+-   Show basic summaries of your dataset, including:
+
+    -   `count()` for categorical variables (to see category frequencies)
+
+    -   `mean()`, `median()`, `sd()`, `min()`, `max()` for at least one numeric variable
+
+```{r}
+table(spotify_churn_dataset$user_id)
+
+mean(spotify_churn_dataset$age)
+median(spotify_churn_dataset$listening_time)
+sd(spotify_churn_dataset$country)
+min(spotify_churn_dataset$user_id)
+max(spotify_churn_dataset$songs_played_per_day)
+```
+
+Write 2–3 sentences here: What do the category counts tell you? What does the numeric summary show about spread, center, or outliers?
+
+## Part 2:
+
+Create **at least 4 plots**, each of a different type. At least one of your four plots must use different variables than the others.
+
+Each plot should have:
+
+-   A title and labeled axes
+
+-   A short interpretation (2-3 sentences) underneath
+
+Use the EDA Part 3 notes as your reference. Since this is an EDA assignment, your plots can be plain, but consider adding colors, themes, or interactivity for interpretability and visual appeal if you know how.
+
+### Plot 1
+
+```{r}
+# insert code here
+ggplot(spotify_churn_dataset, aes(x= gender, y= listening_time))+
+geom_boxplot(fill= "brown") +
+  ggtitle("Gender's listening times")
+
+```
+
+Interpretation: We can see that median values are within close proximity of one another and overlapping interval ranges. This box plot shows how listening_time are very similar for the sexes/gender. The broad range for all groups suggest that customers time listening is not significantly influenced by gender.
+
+### Plot 2
+
+```{r}
+# insert code here
+library(ggplot2)
+ggplot(data= spotify_churn_dataset, aes(x=country, y= listening_time, color=subscription_type))+
+  geom_point(size= 8, alpha=0.7)
+```
+
+Interpretation: In this scatter plot it displays listening time by subscription_type across several countries is the x-axis. The listening_time varies across all countries, starting from 0 to 300, with barely any variation in distribution by subscription_type. As you can see the colors overlap, demonstrating that listening habits are largely the same across countries and subscription plans.
+
+### Plot 3
+
+```{r}
+# insert code here
+ggplot(spotify_churn_dataset, aes(x=factor(is_churned), y= age, fill= factor(is_churned))) +
+  geom_bar(stat= "summary", fun= "median") +
+  labs(title= "Churned status by age",
+       x= "is_churned(0= No, 1= Yes)",
+       y= "Age") +
+  theme_dark()
+
+```
+
+Interpretation: So in this bar plot or chart, it shows the age distribution of churned(1=yes) and non-churned (0=No) users. When we look at the plot, the average age f the two groups is almost the same, indicating that age has little bearing on whether people leave/cancel or stick around.
+
+### .Plot 4
+
+```{r}
+# insert code here
+ggplot(spotify_churn_dataset, aes(x = skip_rate)) +
+  geom_histogram(binwidth = 0.05, fill = "purple", color = "black", alpha = 0.7) +
+  labs(title = "Distribution of Skip Rate",
+       x = "Skip Rate",
+       y = "Count") +
+  theme_minimal() 
+
+```
+
+Interpretation: This Histogram shows a the distribution count or average count for skip rates. So based on what the Histogram portrays, majority listeners are spread out the middle part rather than concentrating at a singular number, with skip rates being pretty evenly distributed between 0.0 and 0.6. lastly, it appears that low and high skipping behaviors is less common since fewer users fall at the extremes.
+
+## Push to GitHub to Submit!
+
+Assignment is due Sunday 9/28 at 11:59 pm.
