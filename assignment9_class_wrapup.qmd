@@ -89,4 +89,14 @@ penguins <- penguins %>%
 ```{r, message=FALSE}
 # insert code snippet here
 
+#Part 1: Adding new columns
+### displays flipper length in inches
+
+flipInch_mutated <- penguins %>%
+  mutate(flipinch = flipper_length_mm/25.4)
+
+#Part 2: Another example
+### displays culmen length in km
+culmometers_mutate <- penguins %>%
+  mutate(culmen_length_km = culmen_length_mm/1000000)
 ```
